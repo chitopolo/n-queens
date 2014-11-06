@@ -79,12 +79,48 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+       var result = this.checkRowConflicts();
+      if(result.row === rowIndex) return true;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+     var result = this.checkRowConflicts();
+     return result.conflict;
+    },
+
+
+    checkRowConflicts: function(){
+
+       // console.log(this.get(0));
+      var theRows = this.rows();
+      for(var i = 0 ; i < theRows.length ; i++) {
+        var fakeArray = this.get(i);
+        var count = 0;
+        function findColision(theFakeArray){
+        count++;
+        var foundItem = theFakeArray.indexOf(1);
+          if(foundItem > -1){ 
+            fakeArray.splice(foundItem, 1);
+            findColision(fakeArray);
+          }
+        };
+        findColision(fakeArray);
+        var conflictRow = {
+          row: i,
+          conflict:false
+        };
+        if(count>1){
+          conflictRow = {
+            row: i,
+            conflict: true
+           };
+
+          return conflictRow;
+        }
+     };
+     return conflictRow;
+
     },
 
 
@@ -94,12 +130,48 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
+
+
+
       return false; // fixme
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+
+      //iterate in the first array
+        //if 1 is found save it's position in another array
+        //keep iterating with the other arrays just like before
+      //Compare those arrays and if there are more than 1 number position repeated then brake it
+       var theRows = this.rows();
+       var duplicates = [];
+       debugger;  
+      for(var i = 0 ; i < theRows.length ; i++) {
+        var subArray = this.get(i);
+        var fakeArray = subArray;
+        var count = 0;
+        console.log('the Array' + subArray +' in this '+ i);
+        function findColision(theFakeArray){
+        // count++;
+        var foundItem = theFakeArray.indexOf(1);
+          if(foundItem > -1){ 
+            duplicates.push(foundItem);
+            fakeArray.splice(foundItem, 1);
+            findColision(fakeArray);
+          }
+        };
+        findColision(fakeArray);
+        // if(count>1){
+        //   return true;
+        // }
+     };
+     console.log('duplicados '+ duplicates);
+    // if(duplicates.length > 0){
+    //   return findedNumbers[0];
+    // }else{
+    //    return null;
+    // }
+     return false;
     },
 
 
